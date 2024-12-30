@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Benimle Çıkar Mısın?</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Genel Ayarlar */
+body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: radial-gradient(circle at center, #2a2a72, #009ffd);
+  font-family: 'Arial', sans-serif;
+  color: white;
+  overflow: hidden;
+}
+
+/* Ana Konteyner */
+.container {
+  text-align: center;
+  animation: fadeIn 2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Soru Kutusu */
+.question-box {
+  font-size: 30px;
+  margin-bottom: 20px;
+  background: linear-gradient(45deg, #ff5f6d, #ffc371);
+  color: white;
+  padding: 20px 30px;
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+  
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+/* Butonlar */
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+button {
+  padding: 15px 30px;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+}
+
+#yesButton {
+  background-color: #00c853;
+  color: white;
+  box-shadow: 0 0 10px rgba(0, 200, 83, 0.5);
+}
+
+#noButton {
+  background-color: #d50000;
+  color: white;
+  box-shadow: 0 0 10px rgba(213, 0, 0, 0.5);
+  position: relative;
+}
+
+/* Kalpler Animasyonu */
+#hearts {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.heart {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: red;
+  opacity: 0.8;
+  clip-path: polygon(50% 0%, 100% 35%, 82% 100%, 50% 75%, 18% 100%, 0% 35%);
+  animation: fall 3s infinite ease-in-out;
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(-50px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
+
+/* Kedinin Görüntüsü */
+#sadCat {
+  position: absolute;
+  bottom: -200px; /* Başlangıçta görünmez */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150px;
+  opacity: 0;
+  transition: all 2s ease-in-out;
+}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="question-box">
+      <p>Naz, benimle çıkar mısın?</p>
+    </div>
+    <div class="button-container">
+      <button id="yesButton">EVET</button>
+      <button id="noButton">HAYIR</button>
+    </div>
+  </div>
+  <div id="hearts"></div>
+  <img src="naz-cat.jpg" id="sadCat" alt="Sad Cat">
+  <script src="script.js"></script>
+
+  <script>
+
+const noButton = document.getElementById('noButton');
+const yesButton = document.getElementById('yesButton');
+const heartsContainer = document.getElementById('hearts');
+const sadCat = document.getElementById('sadCat');
+
+// "Hayır" butonunun kaçma hareketi
+noButton.addEventListener('mouseover', () => {
+  const x = Math.random() * (window.innerWidth - noButton.offsetWidth);
+  const y = Math.random() * (window.innerHeight - noButton.offsetHeight);
+  noButton.style.position = 'absolute';
+  noButton.style.left = `${x}px`;
+  noButton.style.top = `${y}px`;
+});
+
+// "Evet" butonuna tıklanınca
+yesButton.addEventListener('click', () => {
+  document.querySelector('.question-box').innerHTML = '<p> Artık Sevgilşiyiz❤️</p>';
+  createHearts();
+});
+
+// Kalp oluşturma ve düşme animasyonu
+function createHearts() {
+  for (let i = 0; i < 50; i++) {
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.style.left = Math.random() * 100 + 'vw';
+    heart.style.animationDuration = Math.random() * 2 + 3 + 's';
+    heartsContainer.appendChild(heart);
+
+    // Kalbi DOM'dan kaldır
+    setTimeout(() => {
+      heart.remove();
+    }, 5000);
+  }
+}
+
+// "Hayır" butonuna tıklanınca kedi görünür
+noButton.addEventListener('click', () => {
+  sadCat.style.opacity = 1;
+  sadCat.style.bottom = '20px';
+});
+  </script>
+</body>
+</html>
